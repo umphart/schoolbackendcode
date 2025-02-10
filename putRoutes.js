@@ -189,63 +189,104 @@ router.put('/api/update-third/:id', (req, res) => {
   });
 });
 
-// PUT route to update student details (example)
-router.put('/update-student/:studentId', (req, res) => {
-  const { studentId } = req.params;
-  const { name, section, class: className, dob, guidanceName, guidanceContact, gender } = req.body;
+// const express = require('express');
+// const db = require('./db');
+// const multer = require('multer');
+// const path = require('path');
+// const router = express.Router(); // Define the router here
 
-  if (!name || !section || !className || !dob || !guidanceName || !guidanceContact || !gender) {
-    return res.status(400).send('Please provide all fields');
-  }
+// // Configure multer for file uploads
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads/'); // Folder to save the uploaded files
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${Date.now()}-${file.originalname}`); // Unique file name
+//   },
+// });
 
-  const updateQuery = `
-    UPDATE students 
-    SET name = ?, section = ?, class = ?, dob = ?, guidanceName = ?, guidanceContact = ?, gender = ?
-    WHERE studentID = ?
-  `;
-  db.query(updateQuery, [name, section, className, dob, guidanceName, guidanceContact, gender, studentId], (err) => {
-    if (err) {
-      return res.status(500).send('Error updating student record');
-    }
+// const upload = multer({
+//   storage,
+//   fileFilter: (req, file, cb) => {
+//     const fileTypes = /jpeg|jpg|png/;
+//     const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+//     const mimetype = fileTypes.test(file.mimetype);
 
-    res.status(200).send({ message: 'Student updated successfully' });
-  });
-});
-// Update first term record with automatic total, grade, and remarks calculation
+//     if (extname && mimetype) {
+//       cb(null, true);
+//     } else {
+//       cb(new Error('Only image files are allowed (jpeg, jpg, png)'));
+//     }
+//   },
+// });
 
-  // route to update student
-  router.put('/api/students/update/:studentId', (req, res) => {
-    const { studentId } = req.params;
-    const { name, section, class: studentClass, dob, guidanceContact } = req.body;
-    // Ensure the class is valid
-    let table = '';
-    if (studentClass === 'primary') {
-      table = 'primary_students';
-    } else if (studentClass === 'junior') {
-      table = 'junior_students';
-    } else if (studentClass === 'senior') {
-      table = 'senior_students';
-    }
-    if (!table) {
-      return res.status(400).send('Invalid class specified');
-    }
-    // Proceed with the update query if all is valid
-    const query = `
-      UPDATE ${table}
-      SET name = ?, section = ?, class = ?, dob = ?, guidanceContact = ?
-      WHERE studentID = ?;
-    `;
-    db.query(query, [name, section, studentClass, dob, guidanceContact, studentId], (err, result) => {
-      if (err) {
-        return res.status(500).send('Error updating student record');
-      }
-  
-      if (result.affectedRows === 0) {
-        return res.status(404).send('Student not found');
-      }
-  
-      res.json({ message: 'Student updated successfully' });
-    });
-  });
+// // PUT route to update student details
+// router.put('/api/update-student/:studentID', upload.single('photo'), (req, res) => {
+//   const studentID = decodeURIComponent(req.params.studentID);
+//   console.log(studentID);
+//   const { name, section, class: className, dob, guidanceName, guidanceContact, gender } = req.body;
+//   const photo = req.file ? req.file.filename : null;
+
+//   if (!name || !section || !className || !dob || !guidanceName || !guidanceContact || !gender) {
+//     return res.status(400).send('Please fill out all fields correctly.');
+//   }
+
+//   // Determine which table to update based on section
+//   let table = '';
+//   if (section === 'Primary') {
+//     table = 'primary_students';
+//   } else if (section === 'Junior') {
+//     table = 'junior_students';
+//   } else if (section === 'Senior') {
+//     table = 'senior_students';
+//   }
+
+//   if (!table) {
+//     return res.status(400).send('Invalid section');
+//   }
+
+//   // First, check if the student exists in the appropriate table
+//   const checkQuery = `SELECT COUNT(*) AS count FROM ${table} WHERE studentID = ?`;
+//   db.query(checkQuery, [studentID], (err, result) => {
+//     if (err) {
+//       return res.status(500).send('Error checking student record');
+//     }
+
+//     if (result[0].count === 0) {
+//       return res.status(404).send('Student not found');
+//     }
+
+//     // Update student record in the appropriate table
+//     const updateStudentQuery = `
+//       UPDATE ${table} 
+//       SET name = ?, section = ?, class = ?, dob = ?, guidanceName = ?, guidanceContact = ?, gender = ?, profilePhoto = ?
+//       WHERE studentID = ?
+//     `;
+//     db.query(updateStudentQuery, [name, section, className, dob, guidanceName, guidanceContact, gender, photo || null, studentID], (err) => {
+//       if (err) {
+//         console.error('Error updating student record:', err);
+//         return res.status(500).send('Error updating student record');
+//       }
+
+//       // Update student record in the users table
+//       const updateUserQuery = `
+//         UPDATE users
+//         SET name = ?, section = ?, class = ?, dob = ?, guidanceName = ?, guidanceContact = ?, gender = ?, profilePhoto = ?
+//         WHERE studentID = ?
+//       `;
+//       db.query(updateUserQuery, [name, section, className, dob, guidanceName, guidanceContact, gender, photo || null, studentID], (err) => {
+//         if (err) {
+//           console.error('Error updating user record:', err);
+//           return res.status(500).send('Error updating user record');
+//         }
+
+//         res.status(200).send({ message: 'Student and user records updated successfully!', studentID });
+//       });
+//     });
+//   });
+// });
+
+// module.exports = router;
+
             
 module.exports = router;

@@ -26,6 +26,25 @@ router.get('/api/getStaffMembers', (req, res) => {
     res.status(200).json(result);
   });
 });
+router.get('/api/staff/:staffId', (req, res) => {
+  const staffId = decodeURIComponent(req.params.staffId);
+
+  // Query to fetch staff data from the database
+  const query = 'SELECT * FROM staff WHERE staffID = ?';
+  db.query(query, [staffId], (err, result) => {
+      if (err) {
+          console.error('Error fetching staff record:', err);
+          return res.status(500).json({ error: 'Error fetching staff record' });
+      }
+
+      if (result.length === 0) {
+          return res.status(404).json({ error: 'Staff member not found' });
+      }
+
+      return res.status(200).json(result[0]);  // Assuming you're fetching a single staff record
+  });
+});
+
 
 
 module.exports = router;

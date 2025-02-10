@@ -1,13 +1,10 @@
-require('dotenv').config(); // Load environment variables
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./db');
-const bcrypt = require('bcrypt'); // Ensure bcrypt is imported
 const generateStudentID = require('./generateID');
 const generateStaffID = require('./generateStaffID');
-
+const app = express();
 const studentPostRoutes = require('./studentPostRoutes');
 const studentGetRoutes = require('./studentGetRoutes');
 const studentPutRoutes = require('./studentPutRoutes');
@@ -18,22 +15,15 @@ const staffPutRoutes = require('./staffPutRoutes');
 const staffDeleteRoutes = require('./staffDeleteRoutes');
 const examResultPostRoutes = require('./examResultPostRoutes');  
 const examResultGetRoutes = require('./examResultGetRoutes'); 
-const putRoutes = require('./putRoutes');
-const deleteRoutes = require('./deleteRoutes');
+const putRoutes = require('./putRoutes')
+const deleteRoutes= require('./deleteRoutes')
+const port = 5000;
 
-const app = express();
-const port = process.env.PORT || 5000; // Use environment variable or default to 5000
-
-// CORS Configuration
-app.use(cors({
-  origin: ["https://smsproject-iota.vercel.app"], // Replace with your frontend URL
-  methods: "GET,POST,PUT,DELETE",
-  credentials: true
-}));
-
+// Middleware
+app.use(cors());  // To handle CORS requests from React frontend
 app.use(bodyParser.json());  // To parse JSON request bodies
-
-// Routes
+app.use('/uploads', express.static('uploads')); 
+ 
 app.use(studentPostRoutes);
 app.use(studentGetRoutes);
 app.use(studentPutRoutes);
@@ -44,20 +34,22 @@ app.use(staffPutRoutes);
 app.use(staffDeleteRoutes);
 app.use(examResultPostRoutes); 
 app.use(examResultGetRoutes); 
-app.use(putRoutes);
-app.use(deleteRoutes);
+app.use(putRoutes)
+app.use(deleteRoutes)
 
-// Login API
+
+ 
 app.post('/api/login', (req, res) => {  
   const { username, password } = req.body;
 
+  // Query to fetch all student and staff details along with profile photo
   const query = `
-    SELECT staffID, studentID, name, section, class, dob, guidanceName, guidanceContact, profilePhoto, email, phone, department, gender, password
+    SELECT staffID, studentID, name, section, class, dob, guidanceName, guidanceContact, profilePhoto, email, phone, department, gender
     FROM users
-    WHERE (staffID = ? OR studentID = ?)
+    WHERE (staffID = ? OR studentID = ?) AND password = ?
   `;
 
-  db.query(query, [username, username], (err, results) => {
+  db.query(query, [username, username, password], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Server error');
@@ -68,45 +60,37 @@ app.post('/api/login', (req, res) => {
     }
 
     const user = results[0];
-    bcrypt.compare(password, user.password, (compareErr, isMatch) => {
-      if (compareErr) {
-        console.error('Error comparing passwords:', compareErr);
-        return res.status(500).json({ message: 'Server error.' });
-      }
+    let role = user.staffID ? 'Staff' : 'Student';
 
-      if (!isMatch) {
-        return res.status(401).json({ message: 'Invalid password' });
-      }
-
-      let role = user.staffID ? 'Staff' : 'Student';
-
-      res.json({
-        role,
-        staffID: user.staffID || null,
-        studentID: user.studentID || null,
-        email: user.email,
-        phone: user.phone, // staff phone
-        department: user.department, // staff department
-        name: user.name,
-        section: user.section,
-        class: user.class,
-        dob: user.dob,
-        gender: user.gender, // staff gender
-        guidanceName: user.guidanceName,
-        guidanceContact: user.guidanceContact,
-        profilePhoto: user.profilePhoto,
-      });
+    res.json({
+      role,
+      staffID: user.staffID || null,
+      studentID: user.studentID || null,
+      email: user.email,
+      phone: user.phone, // staff phone
+      department: user.department, // staff department
+      name: user.name,
+      section: user.section,
+      class: user.class,
+      dob: user.dob,
+      gender: user.gender, // staff gender
+      guidanceName: user.guidanceName,
+      guidanceContact: user.guidanceContact,
+      profilePhoto: user.profilePhoto,
     });
   });
 });
 
-// Password Update API
+
 app.put('/api/updatePassword', (req, res) => {
   const { staffID, currentPassword, newPassword } = req.body;
 
   if (!staffID || !currentPassword || !newPassword) {
     return res.status(400).json({ message: 'All fields are required.' });
   }
+
+  // Log input data for debugging
+  console.log('Request Data:', { staffID, currentPassword, newPassword });
 
   const checkQuery = `SELECT * FROM users WHERE staffID = ?`;
   db.query(checkQuery, [staffID], (err, results) => {
@@ -116,15 +100,22 @@ app.put('/api/updatePassword', (req, res) => {
     }
 
     if (results.length === 0) {
+      console.log('Staff ID not found.');
       return res.status(404).json({ message: 'Staff ID not found.' });
     }
 
     const storedPassword = results[0].password;
+
+    // Log the password comparison process
+    console.log('Stored Password:', storedPassword);
+
     bcrypt.compare(currentPassword, storedPassword, (compareErr, isMatch) => {
       if (compareErr) {
         console.error('Error comparing passwords:', compareErr);
         return res.status(500).json({ message: 'Server error.' });
       }
+
+      console.log('Password match status:', isMatch);
 
       if (!isMatch) {
         return res.status(401).json({ message: 'Current password is incorrect.' });
@@ -144,6 +135,7 @@ app.put('/api/updatePassword', (req, res) => {
             return res.status(500).json({ message: 'Error updating password.' });
           }
 
+          console.log('Password updated successfully.');
           res.status(200).json({ message: 'Password updated successfully.' });
         });
       });
@@ -153,6 +145,5 @@ app.put('/api/updatePassword', (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server running on ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${port}`}`);
+  console.log(`Server running on http://localhost:${port}`);
 });
-  
