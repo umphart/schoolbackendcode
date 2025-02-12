@@ -11,6 +11,7 @@ router.get('/api/getStaffMembers', (req, res) => {
       staff.phone, 
       staff.email, 
       staff.gender, 
+      staff.profilePhoto,
       GROUP_CONCAT(subject.subject_name SEPARATOR ', ') AS subjects
     FROM staff
     LEFT JOIN staff_subjects ON staff.staffID = staff_subjects.staffID
