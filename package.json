@@ -4,8 +4,9 @@
   "description": "A system to manage student records",
   "main": "students.js",
   "scripts": {
-    "start": "nodemon students.js"
-  },
+  "start": "node student.js"
+}
+,
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.19.0",
