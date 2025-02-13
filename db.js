@@ -1,19 +1,17 @@
+// db.js
 const mysql = require('mysql2');
 
-// Create a connection to the database
 const db = mysql.createConnection({
-  host: 'localhost',    // Ensure this is correct
-  user: 'root',         // Ensure your MySQL username is correct
-  password: '',  
-  database: 'school',   // Ensure the 'school' database exists
-  port: 3306            // Optional: Add port if your MySQL runs on a different port
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'school'  
 });
 
-// Connect to the database
 db.connect((err) => {
   if (err) {
-    console.error('Error connecting to the database:', err.message);
-    process.exit(1);  // Exit the process if the connection fails
+    console.error('Error connecting to the database:', err);
+    process.exit(1);
   }
   console.log('Database connected successfully');
 });
