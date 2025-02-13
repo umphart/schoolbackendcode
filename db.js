@@ -1,19 +1,11 @@
-// db.js
-const mysql = require('mysql2');
+const { Pool } = require('pg');
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'school'  // Replace with your database name
-});
-
-db.connect((err) => {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-    process.exit(1);
+// Use the external URL for Render PostgreSQL connection
+const pool = new Pool({
+  connectionString: 'postgresql://schooldatabase_e96w_user:OmKs393rULKBQ5xHspj3RNkJfBmJTQuO@dpg-cumbbpl6l47c73983dlg-a.oregon-postgres.render.com/schooldatabase_e96w',
+  ssl: {
+    rejectUnauthorized: false,
   }
-  console.log('Database connected successfully');
 });
 
-module.exports = db;
+module.exports = pool;
