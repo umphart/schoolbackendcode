@@ -334,49 +334,47 @@ router.post('/api/add-second-term-result', (req, res) => {
       res.status(200).send({ message: 'Result inserted successfully!' });
     });
   });
+  app.post('/api/login', (req, res) => {  
+    const { username, password } = req.body;
   
-router.post('/api/login', (req, res) => {  
-  const { username, password } = req.body;
-
-  // Query to fetch all student and staff details along with profile photo
-  const query = `
-    SELECT staffID, studentID, name, section, class, dob, guidanceName, guidanceContact, profilePhoto, email, phone, department, gender
-    FROM users
-    WHERE (staffID = ? OR studentID = ?) AND password = ?
-  `;
-
-  db.query(query, [username, username, password], (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Server error');
-    }
-
-    if (results.length === 0) {
-      return res.status(401).send('Invalid username or password');
-    }
-
-    const user = results[0];
-    let role = user.staffID ? 'Staff' : 'Student';
-
-    res.json({
-      role,
-      staffID: user.staffID || null,
-      studentID: user.studentID || null,
-      email: user.email,
-      phone: user.phone, // staff phone
-      department: user.department, // staff department
-      name: user.name,
-      section: user.section,
-      class: user.class,
-      dob: user.dob,
-      gender: user.gender, // staff gender
-      guidanceName: user.guidanceName,
-      guidanceContact: user.guidanceContact,
-      profilePhoto: user.profilePhoto,
+    // Query to fetch all student and staff details along with profile photo
+    const query = `
+      SELECT staffID, studentID, name, section, class, dob, guidanceName, guidanceContact, profilePhoto, email, phone, department, gender
+      FROM users
+      WHERE (staffID = ? OR studentID = ?) AND password = ?
+    `;
+  
+    db.query(query, [username, username, password], (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Server error');
+      }
+  
+      if (results.length === 0) {
+        return res.status(401).send('Invalid username or password');
+      }
+  
+      const user = results[0];
+      let role = user.staffID ? 'Staff' : 'Student';
+  
+      res.json({
+        role,
+        staffID: user.staffID || null,
+        studentID: user.studentID || null,
+        email: user.email,
+        phone: user.phone, // staff phone
+        department: user.department, // staff department
+        name: user.name,
+        section: user.section,
+        class: user.class,
+        dob: user.dob,
+        gender: user.gender, // staff gender
+        guidanceName: user.guidanceName,
+        guidanceContact: user.guidanceContact,
+        profilePhoto: user.profilePhoto,
+      });
     });
   });
-});
-
-
+  
 
 module.exports = router;

@@ -37,6 +37,10 @@ app.use(examResultGetRoutes);
 app.use(putRoutes)
 app.use(deleteRoutes)
 
+
+ 
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
