@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express'); 
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./db');
@@ -15,32 +15,40 @@ const staffPutRoutes = require('./staffPutRoutes');
 const staffDeleteRoutes = require('./staffDeleteRoutes');
 const examResultPostRoutes = require('./examResultPostRoutes');  
 const examResultGetRoutes = require('./examResultGetRoutes'); 
-const putRoutes = require('./putRoutes')
-const deleteRoutes= require('./deleteRoutes')
-const port = 5000;
+const putRoutes = require('./putRoutes');
+const deleteRoutes = require('./deleteRoutes');
 
-// Middleware
-app.use(cors());  // To handle CORS requests from React frontend
-app.use(bodyParser.json());  // To parse JSON request bodies
+const port = process.env.PORT || 5000;
+
+Middleware
+app.use(cors({
+  origin: ['https://smsproject-iota.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+
+app.use(bodyParser.json());  
 app.use('/uploads', express.static('uploads')); 
- 
-app.use(studentPostRoutes);
-app.use(studentGetRoutes);
-app.use(studentPutRoutes);
-app.use(studentDeleteRoutes);
-app.use(staffGetRoutes);
-app.use(staffPostRoutes);
-app.use(staffPutRoutes);
-app.use(staffDeleteRoutes);
-app.use(examResultPostRoutes); 
-app.use(examResultGetRoutes); 
-app.use(putRoutes)
-app.use(deleteRoutes)
 
+app.use('/api', studentGetRoutes);
+app.use('/api', studentPutRoutes);
+app.use('/api', studentDeleteRoutes);
+app.use('/api', staffGetRoutes);
+app.use('/api', staffPostRoutes);
+app.use('/api', staffPutRoutes);
+app.use('/api', staffDeleteRoutes);
+app.use('/api', examResultPostRoutes); 
+app.use('/api', examResultGetRoutes); 
+app.use('/api', putRoutes);
+app.use('/api', deleteRoutes);
 
- 
+app.get('/test', (req, res) => {
+  res.send("Backend is working!");
+});
+
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on port ${port}`);
 });
