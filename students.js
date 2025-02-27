@@ -17,13 +17,14 @@ const examResultPostRoutes = require('./examResultPostRoutes');
 const examResultGetRoutes = require('./examResultGetRoutes'); 
 const putRoutes = require('./putRoutes')
 const deleteRoutes= require('./deleteRoutes')
+const path = require('path');
+
 const port = 5000;
 
 // Middleware
-app.use(cors());  // To handle CORS requests from React frontend
+app.use(cors()); 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // To handle CORS requests from React frontend
 app.use(bodyParser.json());  // To parse JSON request bodies
-app.use('/uploads', express.static('uploads')); 
- 
 app.use(studentPostRoutes);
 app.use(studentGetRoutes);
 app.use(studentPutRoutes);

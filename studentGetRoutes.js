@@ -673,6 +673,67 @@ router.get('/api/primary1', (req, res) => {
     res.json(results);  // Respond with the student list
   });
 });
+router.get('/api/primary2', (req, res) => {
+  const query = `SELECT * FROM primary_students WHERE class = 'Primary 2'`;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    res.json(results);  // Respond with the student list
+  });
+});
+router.get('/api/primary3', (req, res) => {
+  const query = `SELECT * FROM primary_students WHERE class = 'Primary 3'`;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    res.json(results);  // Respond with the student list
+  });
+});
+router.get('/api/primary4', (req, res) => {
+  const query = `SELECT * FROM primary_students WHERE class = 'Primary 4'`;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    res.json(results);  // Respond with the student list
+  });
+});
+router.get('/api/primary5', (req, res) => {
+  const query = `SELECT * FROM primary_students WHERE class = 'Primary 5'`;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    res.json(results);  // Respond with the student list
+  });
+});
+
+
+router.get('/api/primary2/count', (req, res) => {
+  const query = `SELECT * FROM primary_students WHERE class = 'Primary 2'`;
+  const countQuery = `SELECT COUNT(*) AS studentCount FROM primary_students WHERE class = 'Primary 2'`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+        return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    db.query(countQuery, (err, countResults) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching student count' });
+      }
+      const studentCount = countResults[0].studentCount;
+      res.json({ students: results, totalStudents: studentCount });  
+    });
+  });
+});
+
+
 
 router.get('/api/primary1/count', (req, res) => {
   const query = `SELECT * FROM primary_students WHERE class = 'Primary 1'`;
@@ -692,8 +753,233 @@ router.get('/api/primary1/count', (req, res) => {
   });
 });
 
-// Fetch other classes with similar pattern (Primary 2, Primary 3, etc.)
-// Add routes for Junior, Senior sections with counts similarly
+
+router.get('/api/primary3/count', (req, res) => {
+  const query = `SELECT * FROM primary_students WHERE class = 'Primary 3'`;
+  const countQuery = `SELECT COUNT(*) AS studentCount FROM primary_students WHERE class = 'Primary 3'`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+        return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    db.query(countQuery, (err, countResults) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching student count' });
+      }
+      const studentCount = countResults[0].studentCount;
+      res.json({ students: results, totalStudents: studentCount });  
+    });
+  });
+});
+
+
+router.get('/api/primary4/count', (req, res) => {
+  const query = `SELECT * FROM primary_students WHERE class = 'Primary 4'`;
+  const countQuery = `SELECT COUNT(*) AS studentCount FROM primary_students WHERE class = 'Primary 4'`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+        return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    db.query(countQuery, (err, countResults) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching student count' });
+      }
+      const studentCount = countResults[0].studentCount;
+      res.json({ students: results, totalStudents: studentCount });  
+    });
+  });
+});
+
+
+router.get('/api/primary5/count', (req, res) => {
+  const query = `SELECT * FROM primary_students WHERE class = 'Primary 5'`;
+  const countQuery = `SELECT COUNT(*) AS studentCount FROM primary_students WHERE class = 'Primary 5'`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+        return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    db.query(countQuery, (err, countResults) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching student count' });
+      }
+      const studentCount = countResults[0].studentCount;
+      res.json({ students: results, totalStudents: studentCount });  
+    });
+  });
+});
+
+
+router.get('/api/junior1', (req, res) => {
+  const query = `SELECT * FROM junior_students WHERE class = 'JSS 1'`;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    res.json(results);  // Respond with the student list
+  });
+});
+router.get('/api/junior2', (req, res) => {
+  const query = `SELECT * FROM junior_students WHERE class = 'JSS 2'`;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    res.json(results);  // Respond with the student list
+  });
+});
+router.get('/api/junior3', (req, res) => {
+  const query = `SELECT * FROM junior_students WHERE class = 'JSS 3'`;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    res.json(results);  // Respond with the student list
+  });
+});
+router.get('/api/senior1', (req, res) => {
+  const query = `SELECT * FROM senior_students WHERE class = 'SS 1'`;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    res.json(results);  // Respond with the student list
+  });
+});
+router.get('/api/senior2', (req, res) => {
+  const query = `SELECT * FROM senior_students WHERE class = 'SS 2'`;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    res.json(results);  // Respond with the student list
+  });
+});
+router.get('/api/senior3', (req, res) => {
+  const query = `SELECT * FROM senior_students WHERE class = 'SS 3'`;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    res.json(results);  // Respond with the student list
+  });
+});
+router.get('/api/junior1/count', (req, res) => {
+  const query = `SELECT * FROM junior_students WHERE class = 'JSS 1'`;
+  const countQuery = `SELECT COUNT(*) AS studentCount FROM junior_students WHERE class = 'JSS 1'`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+        return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    db.query(countQuery, (err, countResults) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching student count' });
+      }
+      const studentCount = countResults[0].studentCount;
+      res.json({ students: results, totalStudents: studentCount });  
+    });
+  });
+});
+
+
+
+router.get('/api/junior2/count', (req, res) => {
+  const query = `SELECT * FROM junior_students WHERE class = 'JSS 2'`;
+  const countQuery = `SELECT COUNT(*) AS studentCount FROM junior_students WHERE class = 'JSS 2'`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+        return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    db.query(countQuery, (err, countResults) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching student count' });
+      }
+      const studentCount = countResults[0].studentCount;
+      res.json({ students: results, totalStudents: studentCount });  
+    });
+  });
+});
+
+
+
+router.get('/api/junior3/count', (req, res) => {
+  const query = `SELECT * FROM junior_students WHERE class = 'JSS 3'`;
+  const countQuery = `SELECT COUNT(*) AS studentCount FROM junior_students WHERE class = 'JSS 3'`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+        return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    db.query(countQuery, (err, countResults) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching student count' });
+      }
+      const studentCount = countResults[0].studentCount;
+      res.json({ students: results, totalStudents: studentCount });  
+    });
+  });
+});
+router.get('/api/senior1/count', (req, res) => {
+  const query = `SELECT * FROM senior_students WHERE class = 'SS 1'`;
+  const countQuery = `SELECT COUNT(*) AS studentCount FROM senior_students WHERE class = 'SS 1'`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+        return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    db.query(countQuery, (err, countResults) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching student count' });
+      }
+      const studentCount = countResults[0].studentCount;
+      res.json({ students: results, totalStudents: studentCount });  
+    });
+  });
+});
+router.get('/api/senior2/count', (req, res) => {
+  const query = `SELECT * FROM senior_students WHERE class = 'SS 2'`;
+  const countQuery = `SELECT COUNT(*) AS studentCount FROM senior_students WHERE class = 'SS 2'`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+        return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    db.query(countQuery, (err, countResults) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching student count' });
+      }
+      const studentCount = countResults[0].studentCount;
+      res.json({ students: results, totalStudents: studentCount });  
+    });
+  });
+});
+
+router.get('/api/senior3/count', (req, res) => {
+  const query = `SELECT * FROM senior_students WHERE class = 'SS 3'`;
+  const countQuery = `SELECT COUNT(*) AS studentCount FROM senior_students WHERE class = 'SS 3'`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+        return res.status(500).json({ error: 'Error fetching student list' });
+    }
+    db.query(countQuery, (err, countResults) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching student count' });
+      }
+      const studentCount = countResults[0].studentCount;
+      res.json({ students: results, totalStudents: studentCount });  
+    });
+  });
+});
 
 // Route to fetch student profile by ID (for different student sections)
 router.get('/api/student-profile/:studentId', (req, res) => {
@@ -727,6 +1013,6 @@ router.get('/api/student-profile/:studentId', (req, res) => {
   });
 });
 
-// Add more GET routes as needed...
+
 
 module.exports = router;

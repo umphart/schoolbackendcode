@@ -334,6 +334,6 @@ router.post('/api/add-second-term-result', (req, res) => {
       res.status(200).send({ message: 'Result inserted successfully!' });
     });
   });
-  
+
 
 module.exports = router;

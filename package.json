@@ -4,8 +4,8 @@
   "description": "A system to manage student records",
   "main": "students.js",
   "scripts": {
-    "start": "nodemon students.js",  
-    "dev": "nodemon students.js"    
+    "start": "nodemon students.js",
+    "dev": "nodemon students.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -15,7 +15,8 @@
     "express": "^4.17.1",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.12.0",
-    "pg": "^8.13.2"
+    "pg": "^8.13.2",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
