@@ -22,13 +22,13 @@ const path = require('path');
 const port = 5000;
 
 // Middleware
-// app.use(cors({
-//   origin: ["https://smsproject-git-main-umar-musa-hallirus-projects.vercel.app", 
-//            "https://smsproject-njrcvoy8y-umar-musa-hallirus-projects.vercel.app"],
-//   methods: ["GET", "POST", "PUT", "DELETE"],
-//   credentials: true
-// }));
-app.use(cors());
+app.use(cors({
+  origin: ["https://smsproject-git-main-umar-musa-hallirus-projects.vercel.app", 
+           "https://smsproject-njrcvoy8y-umar-musa-hallirus-projects.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+// app.use(cors());
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // To handle CORS requests from React frontend
 app.use(bodyParser.json());  // To parse JSON request bodies
